@@ -6,11 +6,6 @@ const Login = () => {
   // State variable to manage password visibility
   const [showPassword, setShowPassword] = useState(false);
 
-  // Function to toggle password visibility
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="max-w-md w-full mx-auto">
@@ -71,11 +66,6 @@ const Login = () => {
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
               />
-              <button
-                className="absolute inset-y-0 right-0 px-4 py-2"
-                onClick={togglePasswordVisibility}
-              >
-              </button>
             </div>
           </div>
           <div className="text-center">

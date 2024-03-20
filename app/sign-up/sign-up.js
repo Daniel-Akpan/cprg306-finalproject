@@ -3,19 +3,18 @@ import React, { useState } from "react";
 import Link from "next/link";
 
 const SignUp = () => {
+    // State variable to manage password visibility
   const [showPassword, setShowPassword] = useState(false);
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="max-w-md w-full mx-auto">
+        {/* Title and description */}
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-4">Sign Up</h2>
           <p className="text-gray-600 mb-8">Create an account to get started</p>
         </div>
+        {/* Social Signup buttons */}
         <div className="mb-6 flex justify-center space-x-4">
           <a
             href="https://www.google.com/"
@@ -36,6 +35,7 @@ const SignUp = () => {
             Sign up with Facebook
           </a>
         </div>
+        {/* SignUp form */}
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
             <label
@@ -59,16 +59,13 @@ const SignUp = () => {
               Password
             </label>
             <div className="relative">
+                {/* Password input with toggle button */}
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline pr-10"
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
               />
-              <button
-                className="absolute inset-y-0 right-0 px-4 py-2"
-                onClick={togglePasswordVisibility}
-              ></button>
             </div>
           </div>
           <div className="text-center">
@@ -80,6 +77,7 @@ const SignUp = () => {
             </button>
           </div>
         </form>
+         {/* Link to Log-in page */}
         <div className="text-center">
           <p className="text-gray-600 text-sm">
             Already have an account?{" "}
@@ -88,6 +86,7 @@ const SignUp = () => {
             </a>
           </p>
         </div>
+        {/* "Go to Homepage" button */}
         <div className="text-center mt-4">
           <Link href="/">
             <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
