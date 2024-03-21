@@ -5,24 +5,25 @@ import { createUserWithEmailAndPassword } from "firebase/auth"; // Import Fireba
 import { auth } from "../firebase"; // Import the auth object
 
 const SignUp = () => {
-    const [email, setEmail] = useState(""); // State variable for email
-    const [password, setPassword] = useState(""); // State variable for password
-    const [error, setError] = useState(null); // State variable for error message
+  // State variables for email, password, and error
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
-    // Function to handle form submission
-    const onSubmit = async (event) => {
-        event.preventDefault(); // Prevent default form submission behavior
-        
-        try {
-            // Create user account with Firebase
-            const authUser = await createUserWithEmailAndPassword(auth, email, password);
-            console.log("Success. The user is created in Firebase", authUser);
-            // Redirect or perform further actions as needed
-        } catch (error) {
-            // An error occurred. Set error message to be displayed to user
-            setError(error.message);
-        }
-    };
+  // Function to handle form submission
+  const onSubmit = async (event) => {
+      event.preventDefault();
+
+      try {
+          // Create user account with Firebase
+          const authUser = await createUserWithEmailAndPassword(auth, email, password);
+          console.log("Success. The user is created in Firebase", authUser);
+          // Redirect or perform further actions as needed
+      } catch (error) {
+          // An error occurred. Set error message to be displayed to user
+          setError(error.message);
+      }
+  };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -66,15 +67,16 @@ const SignUp = () => {
                         </button>
                     </div>
                 </form>
-                {/* Link to Log-in page */}
-                <div className="text-center">
-                    <p className="text-gray-600 text-sm">
-                        Already have an account?{" "}
-                        <Link href="/log-in">
-                            <span className="text-blue-500 hover:underline">Log in</span>
-                        </Link>
-                    </p>
-                </div>
+{/* Link to Log-in page */}
+<div className="text-center">
+    <p className="text-gray-600 text-sm">
+        Already have an account?{" "}
+        <Link href="/log-in"> {/* Change href to the correct route */}
+            <a className="text-blue-500 hover:underline">Log in</a>
+        </Link>
+    </p>
+</div>
+
                 {/* "Go to Homepage" button */}
                 <div className="text-center mt-4">
                     <Link href="/">
