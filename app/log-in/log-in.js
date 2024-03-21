@@ -64,12 +64,14 @@ const Login = () => {
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>} {/* Display error message if present */}
           <div className="text-center">
             {/* Login button */}
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="submit"
-            >
-              Log In
-            </button>
+            <Link href="/"> {/* Added href to the Home page */}
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="submit"
+              >
+                Log In
+              </button>
+            </Link>
           </div>
         </form>
         {/* Link to sign-up page */}
