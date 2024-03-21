@@ -1,40 +1,42 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase signInWithEmailAndPassword function
-import { auth } from "../firebase"; // Import the auth object
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Login = () => {
-  // State variables for email, password, and error
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Function to handle form submission
-  const onSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      // Sign in user with Firebase
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      // Redirect or perform further actions as needed
       console.log("Success. The user is logged in", userCredential.user);
+      setIsAuthenticated(true);
     } catch (error) {
-      // An error occurred. Set error message to be displayed to user
       setError(error.message);
     }
   };
 
+  // Use useEffect to redirect upon successful login
+  useEffect(() => {
+    if (isAuthenticated) {
+      window.location.href = "/"; // Redirect to the home page
+    }
+  }, [isAuthenticated]);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="max-w-md w-full mx-auto">
-        {/* Title and description */}
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-4">Log In</h2>
           <p className="text-gray-600 mb-8">Log in to your account</p>
         </div>
-        {/* Login form */}
-        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={onSubmit}>
+        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
               Email
@@ -61,20 +63,16 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>} {/* Display error message if present */}
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
           <div className="text-center">
-            {/* Login button */}
-            <Link href="/"> {/* Added href to the Home page */}
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="submit"
-              >
-                Log In
-              </button>
-            </Link>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+            >
+              Log In
+            </button>
           </div>
         </form>
-        {/* Link to sign-up page */}
         <div className="text-center">
           <p className="text-gray-600 text-sm">
             Don't have an account?{" "}
@@ -82,14 +80,6 @@ const Login = () => {
               Sign up
             </Link>
           </p>
-        </div>
-        {/* "Go to Homepage" button */}
-        <div className="flex justify-center mt-4">
-          <Link href="/">
-            <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-              Go to Homepage
-            </button>
-          </Link>
         </div>
       </div>
     </div>
