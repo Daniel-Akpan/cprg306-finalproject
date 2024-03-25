@@ -7,7 +7,7 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center h-screen" style={{backgroundImage: `url('/background.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
       <div className="max-w-md w-full mx-auto">
         {/* Title and description */}
         <div className="text-center mb-8">

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Page = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100" style={{backgroundImage: `url('/background.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
       <h1 className="text-4xl font-bold mb-8 text-center">Welcome to our to-do app</h1>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Link href="/sign-up">
@@ -22,3 +22,4 @@ const Page = () => {
 };
 
 export default Page;
+ 
