@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
  
 const useNavigation = dynamic(() => import('next/navigation').then((mod) => mod.useNavigation), { ssr: false });
  
-function ProfileEditPage() {
+function EditProfile({closeEditProfile, setNames}) {
   const navigation = useNavigation();
   const router = useRouter();
  
@@ -20,6 +20,8 @@ function ProfileEditPage() {
     console.log('Profile updated:', { name, bio });
     // Navigate back to profile page
     await router.push('/profile');
+    setNames(name)
+    closeEditProfile();
   };
  
   return (
@@ -40,4 +42,4 @@ function ProfileEditPage() {
   );
 }
  
-export default ProfileEditPage;
+export default EditProfile;
