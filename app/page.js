@@ -16,6 +16,11 @@ const Page = () => {
             Login
           </button>
         </Link>
+        <Link href="/profile">
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded block text-center">
+            Profile
+          </button>
+          </Link>
       </div>
     </div>
   );
