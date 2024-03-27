@@ -1,27 +1,19 @@
 "use client";
 	 
 import React from 'react';
-import dynamic from 'next/dynamic';
-import { useRouter } from "next/navigation"; 
- 
-const useNavigation = dynamic(() => import('next/navigation').then((mod) => mod.useNavigation), { ssr: false });
- 
+import { useRouter } from "next/router";
+
 function ProfileEditPage() {
-  const navigation = useNavigation();
   const router = useRouter();
- 
   const [name, setName] = React.useState('');
   const [bio, setBio] = React.useState('');
- 
-  // Function to handle form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Update profile data (e.g., make API call)
     console.log('Profile updated:', { name, bio });
-    // Navigate back to profile page
     await router.push('/profile');
   };
- 
+
   return (
     <div>
       <h1>Edit Profile</h1>
@@ -39,5 +31,5 @@ function ProfileEditPage() {
     </div>
   );
 }
- 
+
 export default ProfileEditPage;
