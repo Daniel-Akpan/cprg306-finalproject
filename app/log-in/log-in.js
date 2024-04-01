@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { auth } from "../firebase"; 
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,6 +23,35 @@ const Login = () => {
       setError(error.message);
     }
   };
+
+// Function to handle Google sign-in
+const handleGoogleSignIn = async () => {
+  const provider = new GoogleAuthProvider(); 
+  try {
+    // Sign in with Google provider using Firebase
+    const result = await signInWithPopup(auth, provider);
+    console.log("Success. User signed in with Google", result.user);
+    setIsAuthenticated(true);
+  } catch (error) {
+    // An error occurred. Set error message to be displayed to user
+    setError(error.message);
+  }
+};
+
+// Function to handle Facebook sign-in
+const handleFacebookSignIn = async () => {
+  const provider = new FacebookAuthProvider();
+  try {
+    // Sign in with Facebook provider using Firebase
+    const result = await signInWithPopup(auth, provider);
+    console.log("Success. User signed in with Facebook", result.user);
+    // Redirect or perform further actions as needed
+  } catch (error) {
+    // An error occurred. Set error message to be displayed to user
+    setError(error.message);
+  }
+};
+
 
   // Use useEffect to redirect upon successful login
   useEffect(() => {
@@ -73,6 +104,25 @@ const Login = () => {
             </button>
           </div>
         </form>
+        {/* Google Sign-in button */}
+        <div className="text-center mt-4">
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={handleGoogleSignIn}
+          >
+            Log In with Google
+          </button>
+        </div>
+        {/* Facebook Sign-in button */}
+<div className="text-center mt-4">
+  <button
+    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    onClick={handleFacebookSignIn}
+  >
+    Log In with Facebook
+  </button>
+</div>
+
         <div className="text-center">
           <p className="text-gray-600 text-sm">
             Don't have an account?{" "}
