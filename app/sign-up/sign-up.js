@@ -1,8 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { createUserWithEmailAndPassword } from "firebase/auth"; 
-import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+} from "firebase/auth";
 import { auth } from "../firebase"; // Import the auth object
 
 const SignUp = () => {
@@ -17,7 +21,11 @@ const SignUp = () => {
 
     try {
       // Create user account with Firebase
-      const authUser = await createUserWithEmailAndPassword(auth, email, password);
+      const authUser = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       console.log("Success. The user is created in Firebase", authUser);
       // Redirect or perform further actions as needed
     } catch (error) {
@@ -41,7 +49,7 @@ const SignUp = () => {
   };
 
   // Function to handle Facebook sign-in
-const handleFacebookSignIn = async () => {
+  const handleFacebookSignIn = async () => {
     const provider = new FacebookAuthProvider();
     try {
       // Sign in with Facebook provider using Firebase
@@ -53,10 +61,16 @@ const handleFacebookSignIn = async () => {
       setError(error.message);
     }
   };
-  
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen bg-gray-100"
+      style={{
+        backgroundImage: `url('/background.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="max-w-md w-full mx-auto">
         {/* Title and description */}
         <div className="text-center mb-8">
@@ -69,7 +83,10 @@ const handleFacebookSignIn = async () => {
           onSubmit={handleEmailPasswordSubmit}
         >
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -82,7 +99,10 @@ const handleFacebookSignIn = async () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
@@ -94,7 +114,8 @@ const handleFacebookSignIn = async () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>} {/* Display error message if present */}
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}{" "}
+          {/* Display error message if present */}
           <div className="text-center">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -114,26 +135,30 @@ const handleFacebookSignIn = async () => {
           </button>
         </div>
         {/* Facebook Sign-in button */}
-<div className="text-center mt-4">
-  <button
-    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-    onClick={handleFacebookSignIn}
-  >
-    Sign Up with Facebook
-  </button>
-</div>
+        <div className="text-center mt-4">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={handleFacebookSignIn}
+          >
+            Sign Up with Facebook
+          </button>
+        </div>
 
         {/* Link to Log-in page */}
         <div className="text-center mt-4">
           <p className="text-gray-600 text-sm">
             Already have an account?{" "}
-            <a href="/log-in" className="text-blue-500 hover:underline">Log in</a>
+            <a href="/log-in" className="text-blue-500 hover:underline">
+              Log in
+            </a>
           </p>
         </div>
 
         {/* "Go to Homepage" button */}
         <div className="text-center mt-4">
-          <a href="/" className="text-blue-500 hover:underline">Home Page</a>
+          <a href="/" className="text-blue-500 hover:underline">
+            Home Page
+          </a>
         </div>
       </div>
     </div>
