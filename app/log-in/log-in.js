@@ -56,7 +56,7 @@ const handleFacebookSignIn = async () => {
   // Use useEffect to redirect upon successful login
   useEffect(() => {
     if (isAuthenticated) {
-      window.location.href = "/"; // Redirect to the home page
+      window.location.href = "/profile"; // Redirect to the home page
     }
   }, [isAuthenticated]);
 
