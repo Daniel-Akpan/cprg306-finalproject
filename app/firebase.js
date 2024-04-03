@@ -1,9 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth"; // Import getAuth function
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -21,11 +20,40 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-// Get auth object
+// Get auth and Firestore objects
 const auth = getAuth(app);
+const firestore = getFirestore(app);
+
+// Function to update user document in Firestore
+async function updateUserDocument(uid, userData) {
+  const userDocRef = doc(firestore, 'users', uid);
+  await setDoc(userDocRef, userData, { merge: true });
+}
+
+// Listen for authentication state changes
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    // User is signed in
+    const uid = user.uid;
+    const userData = {
+      name: user.displayName,
+      bio: "", // You can fetch bio from user input
+      profilePicture: user.photoURL
+    };
+    try {
+      await updateUserDocument(uid, userData);
+      console.log("User data updated successfully");
+    } catch (error) {
+      console.error("Error updating user data: ", error);
+    }
+  } else {
+    // User is signed out
+    // Handle sign-out actions if needed
+  }
+});
 
 // Export the auth object
-export { auth };
+export { auth, firestore };
 
 // Optionally, you can export other Firebase objects as needed
 export default app;
