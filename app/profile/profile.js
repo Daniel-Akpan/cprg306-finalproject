@@ -1,8 +1,6 @@
 "use client";
-
-// Import necessary modules
 import React, { useState, useEffect } from "react";
-import { auth, updateUser } from "@/app/firebase"; // Import updateUser function
+import { auth, firestore, updateUser, doc, onSnapshot } from "@/app/firebase"; // Import updateUser function and Firestore functions
 
 const ProfilePage = () => {
   const [name, setName] = useState("");
@@ -13,10 +11,18 @@ const ProfilePage = () => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in
-        // Fetch user data from Firebase auth
-        setName(user.displayName || ""); // Set name from Firebase auth
-        // Set an empty bio for now
-        setBio(""); 
+        // Fetch user data from Firestore
+        const userDocRef = doc(firestore, 'users', user.uid);
+        const unsubscribeFirestore = onSnapshot(userDocRef, (doc) => {
+          if (doc.exists()) {
+            const userData = doc.data();
+            setName(userData.name || ""); // Set name from Firestore
+            setBio(userData.bio || ""); // Set bio from Firestore
+          } else {
+            console.log("No such document!");
+          }
+        });
+        return () => unsubscribeFirestore();
       } else {
         // User is signed out
         // Clear name and bio

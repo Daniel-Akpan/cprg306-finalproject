@@ -1,9 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-// Import the necessary functions from the firestore module
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, onSnapshot } from "firebase/firestore"; // Remove setDoc from this line
 import { isSupported as isAnalyticsSupported, getAnalytics } from "firebase/analytics";
+
+
 
 
 // Your web app's Firebase configuration
@@ -44,7 +45,7 @@ if (!firestore) {
 
 // Export the auth object
 // Export the auth object and updateUser function
-export { auth, firestore, updateUser };
+export { auth, firestore, updateUser, doc, onSnapshot };
 
 // Check if Firebase Analytics is supported before initializing
 if (isAnalyticsSupported()) {
