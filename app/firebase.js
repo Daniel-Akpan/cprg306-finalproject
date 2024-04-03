@@ -1,8 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+// Import the necessary functions from the firestore module
 import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { isSupported as isAnalyticsSupported, getAnalytics } from "firebase/analytics";
+
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -25,35 +27,30 @@ const auth = getAuth(app);
 const firestore = getFirestore(app);
 
 // Function to update user document in Firestore
-async function updateUserDocument(uid, userData) {
+async function updateUser(uid, userData) {
   const userDocRef = doc(firestore, 'users', uid);
-  await setDoc(userDocRef, userData, { merge: true });
+  try {
+    await setDoc(userDocRef, userData, { merge: true });
+    console.log('User data updated successfully');
+  } catch (error) {
+    console.error('Error updating user data:', error);
+  }
 }
 
-// Listen for authentication state changes
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    // User is signed in
-    const uid = user.uid;
-    const userData = {
-      name: user.displayName,
-      bio: "", // You can fetch bio from user input
-      profilePicture: user.photoURL
-    };
-    try {
-      await updateUserDocument(uid, userData);
-      console.log("User data updated successfully");
-    } catch (error) {
-      console.error("Error updating user data: ", error);
-    }
-  } else {
-    // User is signed out
-    // Handle sign-out actions if needed
-  }
-});
+// Verify Firestore import
+if (!firestore) {
+  console.error("Firestore is not imported correctly.");
+}
 
 // Export the auth object
-export { auth, firestore };
+// Export the auth object and updateUser function
+export { auth, firestore, updateUser };
+
+// Check if Firebase Analytics is supported before initializing
+if (isAnalyticsSupported()) {
+  const analytics = getAnalytics(app);
+}
+
 
 // Optionally, you can export other Firebase objects as needed
 export default app;

@@ -1,22 +1,19 @@
 "use client";
 	 
 import React from 'react';
-import dynamic from 'next/dynamic';
-import { useRouter } from "next/navigation"; 
- 
-const useNavigation = dynamic(() => import('next/navigation').then((mod) => mod.useNavigation), { ssr: false });
 
-function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setBio }) {
-  const router = useRouter();
+function EditProfile({ closeEditProfile, initialName, initialBio, updateUser }) {
   const [name, setName] = React.useState(initialName);
   const [bio, setLocalBio] = React.useState(initialBio);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Profile updated:', { name, bio });
-    await router.push('/profile');
-    setNames(name);
-    setBio(bio);
+    if (updateUser) {
+      await updateUser({ name, bio });
+    } else {
+      console.error('updateUser function is not provided.');
+    }
     closeEditProfile();
   };
 
