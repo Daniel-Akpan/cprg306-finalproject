@@ -10,14 +10,17 @@ function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setB
   const [bio, setLocalBio] = useState(initialBio);
   const [profileImage, setProfileImage] = useState(null);
 
+  const storage = getStorage();
+
   useEffect(() => {
     // Fetch the profile image URL from Firestore
     const db = getFirestore();
     const profileImagesCollectionRef = collection(db, 'profileImages');
     getDocs(profileImagesCollectionRef)
-      .then((querySnapshot) => {
+    .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           const { imageUrl, userId } = doc.data();
+          // console.log("imageUrl: ", imageUrl)
           if (userId === firebaseAuth.currentUser.uid) {
             getDownloadURL(ref(getStorage(), imageUrl))
               .then((url) => {
@@ -36,7 +39,8 @@ function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setB
 
   const handleFileUpload = async (file) => {
     const storageRef = ref(firebaseStorage, `profile_images/${file.name}`); 
-    
+    getDownloadURL(ref(storage, `profile_images/${file.name}`)).then((url)=>{console.log("url: ", url)})
+    console.log("storage ref: ", storageRef)
     // Upload file to storage
     const snapshot = await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(snapshot.ref);

@@ -4,7 +4,6 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage"; 
 import { getFirestore, doc, setDoc, onSnapshot } from "firebase/firestore"; 
-import { isSupported as isAnalyticsSupported, getAnalytics } from "firebase/analytics"; 
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -18,7 +17,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig); // Initialize Firebase app
+const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
@@ -35,19 +34,8 @@ async function updateUser(uid, userData) {
   }
 }
 
-// Verify Firestore import
-if (!firestore) {
-  console.error("Firestore is not imported correctly.");
-}
 
-// Export the auth object
 // Export the auth object and updateUser function
-export { auth, firestore, updateUser, doc, onSnapshot };
+export { auth, firestore, firebaseStorage, updateUser, doc, onSnapshot };
 
-// Check if Firebase Analytics is supported before initializing
-if (isAnalyticsSupported()) {
-  const analytics = getAnalytics(app);
-}
-
-export { app, analytics, auth, firebaseStorage }; // Export firebaseStorage
-
+export { app, analytics }; // Export firebaseStorage

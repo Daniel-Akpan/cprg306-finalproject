@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import EditProfile from "@/components/editProfile";
+import Image from 'next/image'
 
 const ProfilePage = ({ profileImage, name, bio, setName, setBio }) => {
   const [showEditPage, setShowEditPage] = useState(false);
@@ -9,6 +10,7 @@ const ProfilePage = ({ profileImage, name, bio, setName, setBio }) => {
   const handleEditProfile = () => {
     setShowEditPage(true);
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -20,6 +22,7 @@ const ProfilePage = ({ profileImage, name, bio, setName, setBio }) => {
           setNames={setName}
           setBio={setBio}
         />
+
       ) : (
         <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md border-2 border-black">
           <h1 className="text-2xl font-semibold mb-4">Profile Page</h1>
@@ -54,6 +57,7 @@ const ProfilePage = ({ profileImage, name, bio, setName, setBio }) => {
           Log Out
         </a>
       </div>
+    <Image src="https://firebasestorage.googleapis.com/v0/b/cprg306-todoapp.appspot.com/o/profile_images%2Fpenguin.jpeg?alt=media&token=ced254fc-dd9e-4d8f-a46d-afda85a15143" alt="Profile Picture" width={70} height={70}/>
     </div>
   );
 };
