@@ -1,12 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth"; // Import getAuth function
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage"; 
+import { getFirestore, doc, setDoc, onSnapshot } from "firebase/firestore"; 
+import { isSupported as isAnalyticsSupported, getAnalytics } from "firebase/analytics"; 
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyC2pdQeKSTRyv1oM2l9XzmM6Rd7O4iRGZM",
   authDomain: "cprg306-todoapp.firebaseapp.com",
@@ -18,14 +18,36 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig); // Initialize Firebase app
 const analytics = getAnalytics(app);
-
-// Get auth object
 const auth = getAuth(app);
+const firestore = getFirestore(app);
+const firebaseStorage = getStorage(app);
+
+// Function to update user document in Firestore
+async function updateUser(uid, userData) {
+  const userDocRef = doc(firestore, 'users', uid);
+  try {
+    await setDoc(userDocRef, userData, { merge: true });
+    console.log('User data updated successfully');
+  } catch (error) {
+    console.error('Error updating user data:', error);
+  }
+}
+
+// Verify Firestore import
+if (!firestore) {
+  console.error("Firestore is not imported correctly.");
+}
 
 // Export the auth object
-export { auth };
+// Export the auth object and updateUser function
+export { auth, firestore, updateUser, doc, onSnapshot };
 
-// Optionally, you can export other Firebase objects as needed
-export default app;
+// Check if Firebase Analytics is supported before initializing
+if (isAnalyticsSupported()) {
+  const analytics = getAnalytics(app);
+}
+
+export { app, analytics, auth, firebaseStorage }; // Export firebaseStorage
+

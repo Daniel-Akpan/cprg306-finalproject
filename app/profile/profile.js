@@ -3,9 +3,7 @@
 import React, { useState } from "react";
 import EditProfile from "@/components/editProfile";
 
-const ProfilePage = () => {
-  const [name, setName] = useState("John Doe");
-  const [bio, setBio] = useState("Some bio information");
+const ProfilePage = ({ profileImage, name, bio, setName, setBio }) => {
   const [showEditPage, setShowEditPage] = useState(false);
 
   const handleEditProfile = () => {
@@ -13,14 +11,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div
-      className="flex flex-col items-center justify-center min-h-screen bg-gray-100"
-      style={{
-        backgroundImage: `url('/background.jpg')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       {showEditPage ? (
         <EditProfile
           closeEditProfile={() => setShowEditPage(false)}
@@ -30,10 +21,18 @@ const ProfilePage = () => {
           setBio={setBio}
         />
       ) : (
-        <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md">
+        <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md border-2 border-black">
           <h1 className="text-2xl font-semibold mb-4">Profile Page</h1>
           <div className="flex items-center justify-center w-24 h-24 rounded-full bg-black text-white mb-4">
-            <span className="text-4xl">👤</span> {/* Placeholder icon */}
+            {profileImage ? (
+              <img
+                src={profileImage}
+                alt="Profile"
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              <span className="text-4xl">👤</span> // Placeholder icon
+            )}
           </div>
           <p>
             <strong>Name:</strong> {name}
