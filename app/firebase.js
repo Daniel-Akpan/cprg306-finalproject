@@ -1,9 +1,9 @@
-// Import the functions you need from the SDKs you need
+// Import necessary Firebase modules
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { isSupported as isAnalyticsSupported, getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage"; 
-import { getFirestore, doc, setDoc, onSnapshot } from "firebase/firestore"; 
+import { getFirestore, doc, setDoc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,7 +16,7 @@ const firebaseConfig = {
   measurementId: "G-DHVKE9BEX3"
 };
 
-// Initialize Firebase
+// Initialize Firebase app
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
@@ -34,8 +34,12 @@ async function updateUser(uid, userData) {
   }
 }
 
+// Export the auth object, updateUser function, doc, and onSnapshot
+export { auth, firestore, updateUser, doc, updateDoc, setDoc, getDoc, onSnapshot, firebaseStorage, analytics };
 
-// Export the auth object and updateUser function
-export { auth, firestore, firebaseStorage, updateUser, doc, onSnapshot };
+// Verify Firestore import
+if (!firestore) {
+  console.error("Firestore is not imported correctly.");
+}
 
-export { app, analytics }; // Export firebaseStorage
+export default app;

@@ -1,27 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from "next/navigation"; 
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { firebaseStorage } from "../app/firebase.js";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { firebaseStorage, firestore, updateDoc, doc, getDocs, getDoc, collection} from "../app/firebase.js"; // Import Firebase functions
+import { auth } from "../app/firebase.js"; // Import firebaseAuth
 
 function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setBio }) {
-  const router = useRouter();
   const [name, setName] = useState(initialName);
   const [bio, setLocalBio] = useState(initialBio);
   const [profileImage, setProfileImage] = useState(null);
 
-  const storage = getStorage();
-
   useEffect(() => {
     // Fetch the profile image URL from Firestore
-    const db = getFirestore();
-    const profileImagesCollectionRef = collection(db, 'profileImages');
-    getDocs(profileImagesCollectionRef)
-    .then((querySnapshot) => {
+    const fetchProfileImage = async () => {
+      try {
+        const profileImagesCollectionRef = collection(firestore, 'profileImages');
+        const querySnapshot = await getDocs(profileImagesCollectionRef);
         querySnapshot.forEach((doc) => {
           const { imageUrl, userId } = doc.data();
-          // console.log("imageUrl: ", imageUrl)
-          if (userId === firebaseAuth.currentUser.uid) {
+          if (userId === auth.currentUser.uid) {
             getDownloadURL(ref(getStorage(), imageUrl))
               .then((url) => {
                 setProfileImage(url);
@@ -31,41 +28,50 @@ function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setB
               });
           }
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error getting documents:', error);
-      });
+      }
+    };
+
+    fetchProfileImage();
   }, []); // Ensure the effect runs only once on component mount
 
   const handleFileUpload = async (file) => {
     const storageRef = ref(firebaseStorage, `profile_images/${file.name}`); 
-    getDownloadURL(ref(storage, `profile_images/${file.name}`)).then((url)=>{console.log("url: ", url)})
-    console.log("storage ref: ", storageRef)
     // Upload file to storage
     const snapshot = await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(snapshot.ref);
-
+  
     setProfileImage(downloadURL); // Set the profile image URL
+  
+    // Update user info in Firestore
+    const userDocRef = doc(firestore, 'users', auth.currentUser.uid);
+    // Check if the document exists before updating it
+    const userDocSnapshot = await getDoc(userDocRef);
+    if (userDocSnapshot.exists()) {
+      await updateDoc(userDocRef, {
+        profileImage: downloadURL // Update profileImage URL in the database
+      });
+      console.log('Profile image updated in Firestore');
+    } else {
+      console.error('User document does not exist');
+    }
   
     return downloadURL;
   };
+  
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission behavior
     console.log('Profile updated:', { name, bio });
-  
-    // Perform file upload
-    const fileInput = document.getElementById('profileImage');
-    if (fileInput.files.length > 0) {
-      await handleFileUpload(fileInput.files[0]);
-    }
-  
-    await router.push('/profile');
-    setNames(name);
-    setBio(bio);
+    // Update user info in Firestore
+    const userDocRef = doc(firestore, 'users', auth.currentUser.uid);
+    await updateDoc(userDocRef, {
+      name: name,
+      bio: bio,
+    });
     closeEditProfile();
   };
-  
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -90,7 +96,7 @@ function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setB
           {/* File input for image upload */}
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Profile Image:</label>
-            <input id="profileImage" type="file" accept="image/*" className="w-full" />
+            <input id="profileImage" type="file" accept="image/*" onChange={(e) => handleFileUpload(e.target.files[0])} className="w-full" />
           </div>
           <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Save</button>
         </form>
