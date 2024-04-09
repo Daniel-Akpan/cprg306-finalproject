@@ -31,31 +31,11 @@ function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setB
     return downloadURL;
   };
 
-  useEffect(() => {
-    // Fetch the profile image URL from Firestore
-    const fetchProfileImage = async () => {
-      try {
-        const profileImagesCollectionRef = collection(firestore, 'profileImages');
-        const querySnapshot = await getDocs(profileImagesCollectionRef);
-        querySnapshot.forEach((doc) => {
-          const { imageUrl, userId } = doc.data();
-          if (userId === auth.currentUser.uid) {
-            getDownloadURL(ref(getStorage(), imageUrl))
-              .then((url) => {
-                setProfileImage(url);
-              })
-              .catch((error) => {
-                console.error('Error getting download URL:', error);
-              });
-          }
-        });
-      } catch (error) {
-        console.error('Error getting documents:', error);
-      }
-    };
-
-    fetchProfileImage();
-  }, []); // Ensure the effect runs only once on component mount
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    // Call the handleSubmit function passed from the parent component
+    handleSubmit({ name, bio });
+  };
 
   useEffect(() => {
     setName(initialName);
@@ -77,7 +57,7 @@ function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setB
             <span className=""></span>
           )}
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleFormSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Name:</label>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />

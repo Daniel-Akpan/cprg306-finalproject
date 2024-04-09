@@ -42,23 +42,23 @@ function ProfilePage() {
     setShowEditPage(true);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log('Profile updated:', { name, bio });
+  const handleEditProfileClose = () => {
+    setShowEditPage(false);
+  };
+
+  const handleSubmit = async (formData) => {
+    console.log('Profile updated:', formData);
     // Update user info in Firestore
     const userDocRef = doc(firestore, 'users', auth.currentUser.uid);
-    await updateUser(auth.currentUser.uid, { name, bio });
+    await updateUser(auth.currentUser.uid, formData);
+    
     // If profileImage exists, update it in Firestore
     if (profileImage) {
       await setDoc(userDocRef, { profileImage }, { merge: true });
     }
     setShowEditPage(false);
   };
-
-  const handleEditProfileClose = () => {
-    setShowEditPage(false);
-  };
-
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       {showEditPage ? (
