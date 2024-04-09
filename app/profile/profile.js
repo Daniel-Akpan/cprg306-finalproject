@@ -69,21 +69,21 @@ function ProfilePage() {
           setNames={setName}
           setBio={setBio}
           handleSubmit={handleSubmit}
+          profileImage={profileImage}
+          setProfileImage={setProfileImage} // Pass setProfileImage as a prop
         />
       ) : (
         <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md border-2 border-black">
           <h1 className="text-2xl font-semibold mb-4">Profile Page</h1>
-          <div className="flex items-center justify-center w-24 h-24 rounded-full bg-black text-white mb-4">
-            {profileImage ? (
+          <div className="border border-black w-40 h-40 object-cover rounded-full">
+            {profileImage && (
               <Image
                 src={profileImage}
                 alt="Profile"
-                width={50}
-                height={50}
-                className="rounded-full"
+                width={200}
+                height={200}
+                className="w-40 h-40 object-cover rounded-full"
               />
-            ) : (
-              <span className="text-4xl">👤</span> 
             )}
           </div>
           <p>

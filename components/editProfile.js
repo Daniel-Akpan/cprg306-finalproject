@@ -1,14 +1,35 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { firebaseStorage, firestore, updateDoc, doc, getDocs, getDoc, collection} from "../app/firebase.js"; // Import Firebase functions
 import { auth } from "../app/firebase.js"; // Import firebaseAuth
 
-function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setBio }) {
+function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setBio, handleSubmit, profileImage, setProfileImage }) {
   const [name, setName] = useState(initialName);
   const [bio, setLocalBio] = useState(initialBio);
-  const [profileImage, setProfileImage] = useState(null);
+
+  const handleFileUpload = async (file) => {
+    const storageRef = ref(firebaseStorage, `profile_images/${file.name}`);
+    // Upload file to storage
+    const snapshot = await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+
+    setProfileImage(downloadURL); // Update profile image in parent component
+
+    // Update user info in Firestore
+    const userDocRef = doc(firestore, 'users', auth.currentUser.uid);
+    // Check if the document exists before updating it
+    const userDocSnapshot = await getDoc(userDocRef);
+    if (userDocSnapshot.exists()) {
+      await updateDoc(userDocRef, {
+        profileImage: downloadURL // Update profileImage URL in the database
+      });
+      console.log('Profile image updated in Firestore');
+    } else {
+      console.error('User document does not exist');
+    }
+
+    return downloadURL;
+  };
 
   useEffect(() => {
     // Fetch the profile image URL from Firestore
@@ -36,52 +57,24 @@ function EditProfile({ closeEditProfile, initialName, initialBio, setNames, setB
     fetchProfileImage();
   }, []); // Ensure the effect runs only once on component mount
 
-  const handleFileUpload = async (file) => {
-    const storageRef = ref(firebaseStorage, `profile_images/${file.name}`); 
-    // Upload file to storage
-    const snapshot = await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(snapshot.ref);
-  
-    setProfileImage(downloadURL); // Set the profile image URL
-  
-    // Update user info in Firestore
-    const userDocRef = doc(firestore, 'users', auth.currentUser.uid);
-    // Check if the document exists before updating it
-    const userDocSnapshot = await getDoc(userDocRef);
-    if (userDocSnapshot.exists()) {
-      await updateDoc(userDocRef, {
-        profileImage: downloadURL // Update profileImage URL in the database
-      });
-      console.log('Profile image updated in Firestore');
-    } else {
-      console.error('User document does not exist');
-    }
-  
-    return downloadURL;
-  };
-  
-
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-    console.log('Profile updated:', { name, bio });
-    // Update user info in Firestore
-    const userDocRef = doc(firestore, 'users', auth.currentUser.uid);
-    await updateDoc(userDocRef, {
-      name: name,
-      bio: bio,
-    });
-    closeEditProfile();
-  };
+  useEffect(() => {
+    setName(initialName);
+    setLocalBio(initialBio);
+  }, [initialName, initialBio]);
 
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md border-2 border-black">
         <h1 className="text-2xl font-semibold mb-4">Edit Profile</h1>
-        <div className="flex items-center justify-center w-24 h-24 rounded-full bg-black text-white mb-4">
+        <div className="border border-black w-24 h-24 rounded-full overflow-hidden mb-4">
           {profileImage ? (
-            <img src={profileImage} alt="Profile" className="w-full h-full object-cover rounded-full" />
+            <img
+              src={profileImage}
+              alt="Profile"
+              className="w-24 h-24 object-cover rounded-full"
+            />
           ) : (
-            <span className="text-4xl">👤</span>
+            <span className=""></span>
           )}
         </div>
         <form onSubmit={handleSubmit}>
