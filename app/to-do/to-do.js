@@ -9,6 +9,17 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { firestore } from "../firebase";
+import { getAuth } from "firebase/auth";
+
+const auth = getAuth();
+const user = auth.currentUser;
+
+if (user) {
+  // User is signed in, you can access the user's ID
+  const userId = user.uid;
+} else {
+  // No user is signed in.
+}
 
 const TodoList = () => {
   // State variables
@@ -22,17 +33,29 @@ const TodoList = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const querySnapshot = await getDocs(collection(firestore, "todolists"));
-        const taskList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setTasks(taskList);
+        // Check if the current user is authenticated
+        if (auth.currentUser) {
+          const userId = auth.currentUser.userid; // Get the current user's ID
+          const querySnapshot = await getDocs(
+            query(
+              collection(firestore, "todolists"),
+              where("userId", "==", userId)
+            )
+          );
+          const taskList = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setTasks(taskList);
+        } else {
+          // Handle the case where the user is not authenticated
+          // For example, redirect to the login page or show an error message
+          console.error("User is not authenticated");
+        }
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
     };
-
     fetchTasks();
   }, []);
 
@@ -40,16 +63,19 @@ const TodoList = () => {
   const addTask = async () => {
     if (inputValue.trim() !== "") {
       try {
+        const userId = auth.currentUser.uid; // Get the current user's ID
         const newTaskRef = await addDoc(collection(firestore, "todolists"), {
           text: inputValue,
           completed: false,
-          priority: priority, // Using the selected priority
+          priority: priority,
+          userId: userId, // Add the userId to the task
         });
         const newTask = {
           id: newTaskRef.id,
           text: inputValue,
           completed: false,
-          priority: priority, // Using the selected priority
+          priority: priority,
+          userId: userId, // Include the userId in the state
         };
         setTasks([...tasks, newTask]);
         setInputValue("");
