@@ -3,7 +3,6 @@
 import React from "react";
 import { useRouter } from "next/router";
 
-
 function ProfileEditPage() {
   const router = useRouter();
   const [name, setName] = React.useState("");
@@ -16,7 +15,14 @@ function ProfileEditPage() {
   };
 
   return (
-    <div>
+    <div
+      className="flex flex-col items-center justify-center min-h-screen bg-gray-100"
+      style={{
+        backgroundImage: `url('/background.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <h1>Edit Profile</h1>
       <form onSubmit={handleSubmit}>
         <div>
