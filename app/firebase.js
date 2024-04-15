@@ -1,6 +1,5 @@
 // Import necessary Firebase modules
 import { initializeApp } from "firebase/app";
-// import { isSupported as isAnalyticsSupported, getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import {
@@ -14,18 +13,16 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC2pdQeKSTRyv1oM2l9XzmM6Rd7O4iRGZM",
-  authDomain: "cprg306-todoapp.firebaseapp.com",
-  projectId: "cprg306-todoapp",
-  storageBucket: "cprg306-todoapp.appspot.com",
-  messagingSenderId: "895948289557",
-  appId: "1:895948289557:web:f7b46a1d2d7c047e90001c",
-  measurementId: "G-DHVKE9BEX3",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase app
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const firebaseStorage = getStorage(app);
