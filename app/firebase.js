@@ -49,7 +49,6 @@ export {
   getDoc,
   onSnapshot,
   firebaseStorage,
-  analytics,
 };
 
 // Verify Firestore import
