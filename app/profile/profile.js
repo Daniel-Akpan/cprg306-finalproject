@@ -85,12 +85,12 @@ function ProfilePage() {
           setBio={setBio}
           handleSubmit={handleSubmit}
           profileImage={profileImage}
-          setProfileImage={setProfileImage} // Pass setProfileImage as a prop
+          setProfileImage={setProfileImage}
         />
       ) : (
-        <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md border-2 border-black">
+        <div className="max-w-md w-full bg-white p-6 rounded-md shadow-md border-2 border-black text-center mx-auto">
           <h1 className="text-2xl font-semibold mb-4">Profile Page</h1>
-          <div className="border border-black w-40 h-40 object-cover rounded-full">
+          <div className="border border-black w-40 h-41 object-cover rounded-full mx-auto">
             {profileImage && (
               <Image
                 src={profileImage}
@@ -101,30 +101,33 @@ function ProfilePage() {
               />
             )}
           </div>
-          <p>
-            <strong>Name:</strong> {name}
-          </p>
-          <p>
-            <strong>Bio:</strong> {bio}
-          </p>
+          <p><strong>Name:</strong> {name}</p>
+          <p><strong>Bio:</strong> {bio}</p>
           <button
             className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
             onClick={handleEditProfile}
           >
             Edit Profile
           </button>
+          <div className="mt-4">
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+            >
+              <a href="/to-do">Go to your To-Do List</a>
+            </button>
+          </div>
         </div>
       )}
-      <div className="text-center mt-4">
-        <button className="text-blue-500 cursor-pointer bg-transparent border border-blue-500 px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white">
-          <a href="/"> Log Out</a>
+
+      {/* Log out button with orange styling */}
+      <div className="mt-4">
+        <button className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded">
+          <a href="/">Log Out</a>
         </button>
       </div>
-      <button className="text-blue-500 ml-4 mt-4 absolute top-0 right-0 cursor-pointer bg-transparent border border-blue-500 px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white">
-        <a href="/to-do"> Go to your To-do List</a>
-      </button>
     </div>
   );
 }
 
 export default ProfilePage;
+
