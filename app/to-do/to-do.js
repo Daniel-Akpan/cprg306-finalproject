@@ -7,39 +7,29 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { firestore } from "../firebase";
-import { getAuth } from "firebase/auth";
-
-const auth = getAuth();
-const user = auth.currentUser;
-
-if (user) {
-  // User is signed in, you can access the user's ID
-  const userId = user.uid;
-} else {
-  // No user is signed in.
-}
+import useAuth from "./useAuth";
+import { auth } from "../firebase";
 
 const TodoList = () => {
-  // State variables
+  const currentUser = useAuth();
   const [tasks, setTasks] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("priority");
-  const [priority, setPriority] = useState("normal"); // New state for priority
+  const [priority, setPriority] = useState("normal");
 
-  // Fetch tasks from Firestore on component mount
   useEffect(() => {
     const fetchTasks = async () => {
-      try {
-        // Check if the current user is authenticated
-        if (auth.currentUser) {
-          const userId = auth.currentUser.userid; // Get the current user's ID
+      if (currentUser) {
+        try {
           const querySnapshot = await getDocs(
             query(
               collection(firestore, "todolists"),
-              where("userId", "==", userId)
+              where("userId", "==", currentUser.uid)
             )
           );
           const taskList = querySnapshot.docs.map((doc) => ({
@@ -47,17 +37,15 @@ const TodoList = () => {
             ...doc.data(),
           }));
           setTasks(taskList);
-        } else {
-          // Handle the case where the user is not authenticated
-          // For example, redirect to the login page or show an error message
-          console.error("User is not authenticated");
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
         }
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
+      } else {
+        console.error("User is not authenticated");
       }
     };
     fetchTasks();
-  }, []);
+  }, [currentUser]);
 
   // Add a new task to Firestore
   const addTask = async () => {
