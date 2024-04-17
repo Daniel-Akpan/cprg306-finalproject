@@ -125,7 +125,7 @@ const SignUp = () => {
         </form>
         <div className="text-center">
           <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
             onClick={handleGoogleSignIn}
           >
             Sign Up with Google
@@ -148,9 +148,9 @@ const SignUp = () => {
           </p>
         </div>
         <div className="text-center mt-4">
-          <a href="/" className="text-blue-500 hover:underline">
-            Home Page
-          </a>
+          <button className="text-orange-500 cursor-pointer bg-transparent border border-orange-500 px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-orange-500 hover:text-white">
+            <a href="/"> Home Page</a>
+          </button>
         </div>
       </div>
     </div>

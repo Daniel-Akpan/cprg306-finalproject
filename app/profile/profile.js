@@ -101,18 +101,20 @@ function ProfilePage() {
               />
             )}
           </div>
-          <p><strong>Name:</strong> {name}</p>
-          <p><strong>Bio:</strong> {bio}</p>
+          <p>
+            <strong>Name:</strong> {name}
+          </p>
+          <p>
+            <strong>Bio:</strong> {bio}
+          </p>
           <button
-            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+            className=" mt-4 text-blue-500 cursor-pointer bg-transparent border border-blue-500 px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white"
             onClick={handleEditProfile}
           >
             Edit Profile
           </button>
           <div className="mt-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-            >
+            <button className="text-blue-500 cursor-pointer bg-transparent border border-blue-500 px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white">
               <a href="/to-do">Go to your To-Do List</a>
             </button>
           </div>
@@ -121,7 +123,7 @@ function ProfilePage() {
 
       {/* Log out button with orange styling */}
       <div className="mt-4">
-        <button className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded">
+        <button className="text-orange-500 cursor-pointer bg-transparent border border-orange-500 px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-orange-500 hover:text-white">
           <a href="/">Log Out</a>
         </button>
       </div>
@@ -130,4 +132,3 @@ function ProfilePage() {
 }
 
 export default ProfilePage;
-

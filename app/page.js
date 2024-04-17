@@ -21,14 +21,14 @@ const Page = () => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <Link href="/sign-up">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded block text-center">
+              <button className="text-orange-500 cursor-pointer bg-transparent border border-orange-500 px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-orange-500 hover:text-white">
                 Sign Up
               </button>
             </Link>
           </div>
           <div>
             <Link href="/log-in">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded block text-center">
+              <button className="text-blue-500 cursor-pointer bg-transparent border border-blue-500 px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white">
                 Login
               </button>
             </Link>

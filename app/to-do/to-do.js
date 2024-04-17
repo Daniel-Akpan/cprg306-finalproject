@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import React, { useState, useEffect } from "react";
 import {
   collection,
@@ -114,6 +115,19 @@ const TodoList = () => {
     }
   };
 
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "low":
+        return "green";
+      case "normal":
+        return "blue";
+      case "high":
+        return "red";
+      default:
+        return "black";
+    }
+  };
+
   // Filter and sort tasks based on filter and sortBy criteria
   const filteredTasks = tasks.filter((task) => {
     if (filter === "all") return true;
@@ -140,7 +154,7 @@ const TodoList = () => {
           </button>
         </div>
         <div>
-          <button className="text-blue-500 cursor-pointer bg-transparent border border-blue-500 px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white">
+          <button className="text-orange-500 cursor-pointer bg-transparent border border-orange-500 px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-orange-500 hover:text-white">
             <a href="/"> Log Out</a>
           </button>
         </div>
@@ -217,6 +231,7 @@ const TodoList = () => {
                   value={task.priority}
                   onChange={(e) => changePriority(task.id, e.target.value)}
                   className="px-3 py-1 border mr-2 rounded-md focus:outline-none"
+                  style={{ color: getPriorityColor(task.priority) }}
                 >
                   <option value="low">Low</option>
                   <option value="normal">Normal</option>
