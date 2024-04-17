@@ -1,7 +1,12 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+} from "firebase/auth";
 import { auth, firestore, doc, setDoc } from "../firebase"; // Import the auth object and Firestore utilities
 
 const SignUp = () => {
@@ -14,10 +19,14 @@ const SignUp = () => {
 
     try {
       // Create user account with Firebase
-      const authUser = await createUserWithEmailAndPassword(auth, email, password);
+      const authUser = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
       // Create a user document in Firestore
-      const userDocRef = doc(firestore, 'users', authUser.user.uid);
+      const userDocRef = doc(firestore, "users", authUser.user.uid);
       await setDoc(userDocRef, {
         email: authUser.user.email,
         // Other user data as needed
@@ -55,7 +64,14 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen bg-gray-100"
+      style={{
+        backgroundImage: `url('/background.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="max-w-md w-full mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-4">Sign Up</h2>
@@ -66,7 +82,10 @@ const SignUp = () => {
           onSubmit={handleEmailPasswordSubmit}
         >
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -79,7 +98,10 @@ const SignUp = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
