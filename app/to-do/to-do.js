@@ -137,7 +137,10 @@ const TodoList = () => {
   });
 
   const sortedTasks = filteredTasks.slice().sort((a, b) => {
-    if (sortBy === "priority") return a.priority.localeCompare(b.priority);
+    if (sortBy === "priority") {
+      const priorityOrder = { high: 3, normal: 2, low: 1 };
+      return priorityOrder[b.priority] - priorityOrder[a.priority];
+    }
     if (sortBy === "completed") return a.completed - b.completed;
     return a.text.localeCompare(b.text);
   });
