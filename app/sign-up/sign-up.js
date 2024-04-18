@@ -1,18 +1,19 @@
 "use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
 } from "firebase/auth";
-import { auth, firestore, doc, setDoc } from "../firebase"; // Import the auth object and Firestore utilities
+import { auth, firestore, doc, setDoc } from "../firebase";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleEmailPasswordSubmit = async (event) => {
     event.preventDefault();
@@ -33,7 +34,7 @@ const SignUp = () => {
       });
 
       console.log("Success. The user is created in Firebase", authUser);
-      // Redirect or perform further actions as needed
+      setIsAuthenticated(true);
     } catch (error) {
       setError(error.message);
     }
@@ -45,7 +46,7 @@ const SignUp = () => {
       // Sign in with Google provider using Firebase
       const result = await signInWithPopup(auth, provider);
       console.log("Success. User signed in with Google", result.user);
-      // Redirect or perform further actions as needed
+      setIsAuthenticated(true);
     } catch (error) {
       setError(error.message);
     }
@@ -57,11 +58,18 @@ const SignUp = () => {
       // Sign in with Facebook provider using Firebase
       const result = await signInWithPopup(auth, provider);
       console.log("Success. User signed in with Facebook", result.user);
-      // Redirect or perform further actions as needed
+      setIsAuthenticated(true);
     } catch (error) {
       setError(error.message);
     }
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Redirect to user's page after successful signup
+      window.location.href = "/profile"; // Replace "/userpage" with the actual path of the user's page
+    }
+  }, [isAuthenticated]);
 
   return (
     <div
@@ -119,13 +127,13 @@ const SignUp = () => {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
-              Sign Up with Email
+              Sign Up
             </button>
           </div>
         </form>
-        <div className="text-center">
+        <div className="text-center mt-4">
           <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             onClick={handleGoogleSignIn}
           >
             Sign Up with Google
@@ -142,9 +150,9 @@ const SignUp = () => {
         <div className="text-center mt-4">
           <p className="text-gray-600 text-sm">
             Already have an account?{" "}
-            <a href="/log-in" className="text-blue-500 hover:underline">
+            <Link href="/log-in" className="text-blue-500 hover:underline">
               Log in
-            </a>
+            </Link>
           </p>
         </div>
         <div className="text-center mt-4">
