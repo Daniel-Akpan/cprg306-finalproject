@@ -7,6 +7,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -27,6 +28,16 @@ const Login = () => {
       );
       console.log("Success. The user is logged in", userCredential.user);
       setIsAuthenticated(true);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    try {
+      await sendPasswordResetEmail(auth, email); // Send password reset email
+      setError(null); // Reset error if any
+      alert("Password reset email sent. Please check your email.");
     } catch (error) {
       setError(error.message);
     }
@@ -124,6 +135,16 @@ const Login = () => {
               type="submit"
             >
               Log In
+            </button>
+          </div>
+          {/* Forgot Password link */}
+          <div className="text-center mt-4">
+            <button
+              className="text-blue-500 hover:underline"
+              onClick={handleForgotPassword}
+              type="button"
+            >
+              Forgot Password?
             </button>
           </div>
         </form>
