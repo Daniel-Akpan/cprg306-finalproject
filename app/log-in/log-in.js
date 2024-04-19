@@ -160,7 +160,7 @@ const Login = () => {
         {/* Facebook Sign-in button */}
         <div className="text-center mt-4">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className=" mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             onClick={handleFacebookSignIn}
           >
             Log In with Facebook
@@ -168,7 +168,7 @@ const Login = () => {
         </div>
 
         <div className="text-center">
-          <p className="text-gray-600 text-sm">
+          <p className="mt-2 text-gray-600 text-sm">
             Don&apos;t have an account?{" "}
             <Link href="/sign-up" className="text-blue-500 hover:underline">
               Sign up
